@@ -1,0 +1,307 @@
+:root {
+    --gradient-day-clear: linear-gradient(135deg, #00c6fb 0%, #005bea 100%);
+    --gradient-night-clear: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+    --gradient-rainy: linear-gradient(135deg, #616161 0%, #9bc5c3 100%);
+    --gradient-cloudy: linear-gradient(135deg, #757f9a 0%, #d7dde8 100%);
+    --glass-bg: rgba(31, 41, 55, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: rgba(0, 0, 0, 0.2);
+    --text-primary: rgba(255, 255, 255, 0.9);
+    --text-secondary: rgba(255, 255, 255, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1a1f35 0%, #2c3e50 100%);
+    color: var(--text-primary);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+.container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    position: relative;
+    padding: 20px;
+}
+
+.weather-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    width: 320px;
+    box-shadow: 0 8px 32px var(--glass-shadow);
+    transform-style: preserve-3d;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2;
+}
+
+.weather-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at var(--x, 50%) var(--y, 50%),
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.1) 20%,
+        transparent 60%
+    );
+    border-radius: 24px;
+    opacity: var(--light-opacity, 0);
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    font-size: 0;
+}
+
+.controls button:active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.controls button i {
+    font-size: 16px;
+    pointer-events: none;
+    position: relative;
+    animation: none;
+    transition: none;
+}
+
+.controls button.active {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.controls button:hover i {
+    transform: scale(0.9); /* 아이콘 크기 줄이기 */
+    transition: transform 0.3s ease; /* 부드러운 전환 */
+}
+
+.search {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.search input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+
+.search button {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--glass-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* 로딩 애니메이션 */
+@keyframes rotate3D {
+    0% { transform: rotate3d(1, 1, 1, 0deg); }
+    100% { transform: rotate3d(1, 1, 1, 360deg); }
+}
+
+.loading .weather-icon i {
+    animation: rotate3D 2s linear infinite;
+}
+
+/* 날씨 상태에 따른 배경 변화 */
+.weather-box[data-weather="clear"] {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.weather-box[data-weather="rain"] {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.weather-box[data-weather="cloudy"] {
+    background: rgba(128, 128, 128, 0.2);
+}
+
+/* 3D 카드 효과 */
+.weather-info {
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+.weather-info > * {
+    transform: translateZ(20px);
+}
+
+/* 반응형 물방울 효과 */
+.weather-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0) 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.weather-box:hover::after {
+    opacity: 1;
+}
+
+/* 움직이는 배경 효과 */
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 텍스트 효과 */
+.city {
+    background: linear-gradient(45deg, #fff, #a8edea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 20px rgba(255,255,255,0.2);
+    animation: textFloat 3s ease-in-out infinite;
+}
+
+@keyframes textFloat {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+/* 검색 결과 스타일 */
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+    transform-style: preserve-3d;
+}
+
+.search-results.active {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+.search-result-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateZ(20px);
+    padding-left: 30px;
+}
+
+/* 스크롤바 스타일 */
+.search-results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+/* 모든 transform 관련 hover/active 상태 제거 */
+.controls button:hover,
+.controls button:active,
+.controls button i:hover,
+.controls button i:active {
+    transform: none !important;
+}
+
+.controls button *,
+.controls button *:hover,
+.controls button *:active {
+    transform: none !important;
+    position: static !important;
+}
+
+.controls button:hover i {
+    transform: scale(0.9); /* 아이콘 크기 줄이기 */
+    transition: transform 0.3s ease; /* 부드러운 전환 */
+}
