@@ -305,3 +305,27 @@ body {
     transform: scale(0.9); /* 아이콘 크기 줄이기 */
     transition: transform 0.3s ease; /* 부드러운 전환 */
 }
+
+/* GitHub 아이콘 스타일 */
+a {
+    position: fixed;
+    bottom: 20px; /* 화면 하단 20px */
+    right: 20px;  /* 화면 오른쪽 20px */
+    background: rgba(255, 255, 255, 0.3); /* 투명한 배경 */
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    font-size: 24px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+}
+
+a:hover {
+    background: rgba(255, 255, 255, 0.5); /* 호버 시 밝은 배경 */
+    transform: translateY(-5px); /* 마우스 오버 시 살짝 위로 올라가는 효과 */
+}
+
+a i {
+    pointer-events: none;
+}
