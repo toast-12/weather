@@ -314,6 +314,5 @@ body {
 #HAHA{ 
     border-radius: 20px;
     background-color: #141e30;
-    width: 150px;
-    height: 23px;
+    padding: 8px 10px;
 }
