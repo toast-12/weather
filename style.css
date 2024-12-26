@@ -309,10 +309,8 @@ body {
 .HAHAHAHAHAHAHAHAHAHAHAHA{
     color: white;
     text-decoration: none;
-}
-
-#HAHA{ 
     border-radius: 20px;
     background-color: #141e30;
-    padding: 8px 10px;
+    width: 150px;
+    height: 23px;
 }
