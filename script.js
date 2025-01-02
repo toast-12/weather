@@ -1,6 +1,3 @@
-// dotenv 라이브러리를 사용하여 .env 파일의 환경 변수를 로드
-require('dotenv').config();
-
 const searchInput = document.querySelector('.search input');
 const searchButton = document.querySelector('.search button');
 const weatherInfo = document.querySelector('.weather-info');
@@ -10,8 +7,8 @@ const lastUpdate = document.querySelector('.last-update');
 const searchResults = document.querySelector('.search-results');
 const weatherBox = document.querySelector('.weather-box');
 
-// .env 파일에서 WEATHER_API_KEY를 가져옴
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
+// API 키 설정
+const WEATHER_API_KEY = '77f0690a37179da82ff6487407ee60a3'; // OpenWeatherMap API 키
 
 // API URL 설정
 const WEATHER_API_BASE_URL = 'https://api.openweathermap.org/data/2.5/weather';
